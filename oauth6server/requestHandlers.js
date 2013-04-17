@@ -18,16 +18,16 @@ requestHandlers.demo1 = function (request, response, pathObject, getParam) {
     }
 };
 
-var demo2 = require('./handlers/demo2');
-requestHandlers.demo2 = function (request, response, pathObject, getParam) {
-    var operation = pathObject["operation"];
-    if (operation == "get") {
-        demo2.get(response);
-    } else if (operation == "reset") {
-        var i = getParam["i"];
-        demo2.reset(i, response);
-    }
-};
+//var demo2 = require('./handlers/demo2');
+//requestHandlers.demo2 = function (request, response, pathObject, getParam) {
+//    var operation = pathObject["operation"];
+//    if (operation == "get") {
+//        demo2.get(response);
+//    } else if (operation == "reset") {
+//        var i = getParam["i"];
+//        demo2.reset(i, response);
+//    }
+//};
 
 
 var demo3 = require('./handlers/demo3');
@@ -40,5 +40,17 @@ requestHandlers.demo3 = function (request, response, pathObject, getParam) {
         demo3.reset(i, response);
     }
 };
+
+var accountManage = require('./handlers/accountManage');
+requestHandlers.accountManage = function (request, response, pathObject, getParam) {
+    var operation = pathObject["operation"];
+    if (operation == "add") {
+        accountManage.add(response);
+    } else if (operation == "reset") {
+        var i = getParam["i"];
+        accountManage.reset(i, response);
+    }
+};
+
 
 module.exports = requestHandlers;
