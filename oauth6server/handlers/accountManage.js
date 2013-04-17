@@ -20,27 +20,26 @@ accountManage.add = function (response) {
         "type":"account",
         "password":"8768fd54fd687fd867f465d",
         "phone":"15120088197#verified",
+        "phone1":JSON.stringify({
+            "phoneNumber":"15120088197",
+            "status":"verified"
+        }),
         "email":"wsds888@163.com#verifying%#366541",
         "accesskey":["f5d4f5d46f4d65f4d654f56d4f", "4f54d6f54d65f45d6f465d4f65"]
     };
 
     var node = db.createNode(account);
     node.save(function (err, node) {
-        if (err) {
-            console.err('Error saving new node to database:', err);
-        } else {
-            console.log('Node saved to database with id:', node.id);
-        }
         node.data.uid = node.id;
+        node.index("account", "accountname", account.accountname);
+        node.index("account", "phone", account.phone);
+        node.index("account", "email", account.email);
         node.save(function (err, node) {
-            if (err) {
-                console.err('Error saving new node to database:', err);
-            } else {
-                console.log('Node saved to database with id:', node.id);
-            }
+            var t2=node.data;
+            var t1=JSON.parse(t2.phone1);
             response.write(JSON.stringify({
                 "information":"/api2/account/add  success",
-                "node":node.data
+                "node": t1
             }));
             response.end();
         });
