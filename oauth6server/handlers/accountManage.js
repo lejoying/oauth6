@@ -16,34 +16,64 @@ accountManage.add = function (response) {
     response.asynchronous = 1;
     account =
     {
-        "accountname":"wwww1",
+        "accountname":"wwww2",
         "type":"account",
         "password":"8768fd54fd687fd867f465d",
-        "phone":"15120088197#verified",
-        "phone1":JSON.stringify({
-            "phoneNumber":"15120088197",
-            "status":"verified"
-        }),
-        "email":"wsds888@163.com#verifying%#366541",
+        "phone":"15120080001",
+        "phoneStatus":"verified",
+        "email":"w1001@163.com",
+        "emailStatus":"verifying#366541",
         "accesskey":["f5d4f5d46f4d65f4d654f56d4f", "4f54d6f54d65f45d6f465d4f65"]
     };
 
-    var node = db.createNode(account);
-    node.save(function (err, node) {
-        node.data.uid = node.id;
-        node.index("account", "accountname", account.accountname);
-        node.index("account", "phone", account.phone);
-        node.index("account", "email", account.email);
-        node.save(function (err, node) {
-            var t2=node.data;
-            var t1=JSON.parse(t2.phone1);
+    db.getIndexedNode("account", "accountname", account.accountname, function (err, node) {
+        if (node == null) {
+            db.getIndexedNode("account", "phone", account.phone, function (err, node) {
+                if (node == null) {
+                    db.getIndexedNode("account", "email", account.email, function (err, node) {
+                        if (node == null) {
+                            var node = db.createNode(account);
+                            node.save(function (err, node) {
+                                node.data.uid = node.id;
+                                node.index("account", "accountname", account.accountname);
+                                node.index("account", "phone", account.phone);
+                                node.index("account", "email", account.email);
+                                node.save(function (err, node) {
+                                    response.write(JSON.stringify({
+                                        "information":"/api2/account/add  success",
+                                        "node":node.data
+                                    }));
+                                    response.end();
+                                });
+                            });
+                        }
+                        else{
+                            response.write(JSON.stringify({
+                                "information":"/api2/account/add  failed",
+                                "reason":"email has existed."
+                            }));
+                            response.end();
+                        }
+                    });
+                }else{
+                    response.write(JSON.stringify({
+                        "information":"/api2/account/add  failed",
+                        "reason":"phone number has existed."
+                    }));
+                    response.end();
+                }
+            });
+        }
+        else{
             response.write(JSON.stringify({
-                "information":"/api2/account/add  success",
-                "node": t1
+                "information":"/api2/account/add  failed",
+                "reason":"account name has existed."
             }));
             response.end();
-        });
+
+        }
     });
+
 }
 
 
