@@ -46,9 +46,8 @@ requestHandlers.accountManage = function (request, response, pathObject, getPara
     var operation = pathObject["operation"];
     if (operation == "add") {
         accountManage.add(response);
-    } else if (operation == "reset") {
-        var i = getParam["i"];
-        accountManage.reset(i, response);
+    } else if (operation == "auth") {
+        accountManage.auth(response);
     }
 };
 

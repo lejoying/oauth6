@@ -76,7 +76,7 @@ accountManage.add = function (response) {
 
 }
 
-
+var RSA = require('./../tools/RSA');
 accountManage.auth = function (response) {
     response.asynchronous = 1;
     account =
@@ -91,11 +91,17 @@ accountManage.auth = function (response) {
         "accessKey":["f5d4f5d46f4d65f4d654f56d4f", "4f54d6f54d65f45d6f465d4f65"]
     };
 
+    RSA.setMaxDigits(38);
+    var pbkeyStr3 =RSA.RSAKeyStr(
+        "5db114f97e3b71e1316464bd4ba54b25a8f015ccb4bdf7796eb4767f9828841",
+        "5db114f97e3b71e1316464bd4ba54b25a8f015ccb4bdf7796eb4767f9828841",
+        "3e4ee7b8455ad00c3014e82057cbbe0bd7365f1fa858750830f01ca7e456b659");
+    var pbkey3 = RSA.RSAKey(pbkeyStr3);
 
     response.write(JSON.stringify({
         "uid":"111",
         "accessKey":"f5d4f5d46f4d65f4d654f56d4f",
-        "PbKey":"null"
+        "PbKey":pbkeyStr3
     }));
     response.end();
 
